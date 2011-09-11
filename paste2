@@ -1,0 +1,67 @@
+#!/usr/bin/php
+<?php 
+// In vim, type :X,Yw !php pastebin.php where X and Y is your line range 
+// Note the space between the 'w' and the '!' is important! 
+// Obviously, modify the path to the script as needed to conform to your system 
+
+$fields = array(
+	'lang' => (isset($argv[1]) ? $argv[1] : ''),
+	'description' => (isset($argv[2]) ? $argv[2] : ''),
+	'code' => trim(stream_get_contents(STDIN)),
+	'parent' => 0,
+);
+$cont = "";
+foreach ($fields as $k => $v) {
+	$cont .= '&'.$k.'='.str_replace('&', '%26', $v);
+}
+$cont = substr($cont, 1)."\r\n";
+$len = strlen($cont);
+
+$s = fsockopen('paste2.org', 80);
+$out = "";
+$out .= "POST /new-paste HTTP/1.1\r\n";
+$out .= "Host: paste2.org\r\n";
+$out .= "User-Agent: Paster/1.0\r\n";
+$out .= "Content-Type: application/x-www-form-urlencoded\r\n";
+$out .= "Content-Length: $len\r\n";
+$out .= "Connection: Close\r\n";
+$out .= "\r\n";
+$out .= $cont;
+$out .= "\r\n";
+
+fwrite($s, $out);
+while (!feof($s)) {
+	$buf = fgets($s, 512);
+	if (strpos($buf, "Location: ") !== FALSE) {
+		echo "http://paste2.org".substr($buf, 10);
+		break;
+	}
+}
+
+/*$params = array(
+    CURLOPT_USERAGENT => 'Paster/1.0',
+    CURLOPT_URL => 'http://127.0.0.1:12981/new-paste', 
+//    CURLOPT_URL => 'http://paste2.org/new-paste',
+    CURLOPT_POST => true, 
+    CURLOPT_HEADER => true,
+    CURLOPT_HTTPHEADER => array('Expect' => ''),
+    CURLOPT_RETURNTRANSFER => true, 
+    CURLOPT_POSTFIELDS => array( 
+        'lang' => 'perl', 
+        'description' => '', 
+        'code' => trim(stream_get_contents(STDIN)), 
+        'parent' => '0' 
+    ),
+);
+
+$ch = curl_init(); 
+foreach ($params as $key => $value) { 
+    curl_setopt($ch, $key, $value); 
+} 
+$response = curl_exec($ch); 
+curl_close($ch); 
+
+preg_match('/Location: (.*)/', $response, $match); 
+echo $response;
+echo 'http://www.paste2.org' . $match[1]; 
+*/
