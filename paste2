@@ -12,7 +12,7 @@
 
 
 if (isset($argv[1]))
-	$lang = array_unshift($argv[1]);
+	$lang = $argv[1];
 else
 	$lang = "text";
 if (isset($argv[2]))
