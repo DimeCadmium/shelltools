@@ -21,8 +21,8 @@ else
 	$desc = "";
 
 $fields = array(
-	'lang' => () ? $argv[1] : ''),
-	'description' => (isset($argv[2]) ? $argv[2] : ''),
+	'lang' => $lang,
+	'description' => $desc,
 	'code' => trim(stream_get_contents(STDIN)),
 	'parent' => 0,
 );
