@@ -1,11 +1,27 @@
 #!/usr/bin/php
 <?php 
-// In vim, type :X,Yw !php pastebin.php where X and Y is your line range 
-// Note the space between the 'w' and the '!' is important! 
-// Obviously, modify the path to the script as needed to conform to your system 
+// install in $PATH (for example, /usr/local/bin/)
+
+// cat file | paste2 [language] [description]
+
+// In vim, type :X,Yw !paste2 [language]
+// where X and Y are your line range 
+// X can also be ^ (beginning of file)
+// Y can also be $ (end of file)
+// or you can omit X,Y (all of file)
+
+
+if (isset($argv[1]))
+	$lang = array_unshift($argv[1]);
+else
+	$lang = "text";
+if (isset($argv[2]))
+	$desc = implode(' ', array_slice($argv, 2));
+else
+	$desc = "";
 
 $fields = array(
-	'lang' => (isset($argv[1]) ? $argv[1] : ''),
+	'lang' => () ? $argv[1] : ''),
 	'description' => (isset($argv[2]) ? $argv[2] : ''),
 	'code' => trim(stream_get_contents(STDIN)),
 	'parent' => 0,
