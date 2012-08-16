@@ -1,8 +1,12 @@
 paste2
 ======
 
-Syntax: 
-./paste2 optional_lang <file
+Syntax:
+```bash
+./paste2 language description <file
+```
 
-Or VIM: 
-:w !paste2 optional_lang
+Language and description are optional. Examples:
+```bash
+./paste2 perl This is an awesome program. <helloworld.pl
+```
