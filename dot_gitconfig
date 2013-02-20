@@ -1,0 +1,5 @@
+[core]
+	excludesfile = /home/jrunyon/.gitignore_global
+[user]
+	name = John Runyon
+	email = dimecadmium@tehhost.com
